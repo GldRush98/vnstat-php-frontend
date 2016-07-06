@@ -61,23 +61,23 @@
 	print "</g>\n";
     }
 
-    function svg_text($x, $y, $text, $options = array())
+    function svg_text($x, $y, $text, $options = array()) 
     {
-	printf("<text x=\"%F\" y=\"%F\" ", $x, $y);
+	print("<text x=\"$x\" y=\"$y\" ");
 	svg_options($options);
 	print ">$text</text>\n";
     }
 
     function svg_line($x1, $y1, $x2, $y2, $options = array())
     {
-	printf("<line x1=\"%F\" y1=\"%F\" x2=\"%F\" y2=\"%F\" ", $x1, $y1, $x2, $y2);
+	print("<line x1=\"$x1\" y1=\"$y1\" x2=\"$x2\" y2=\"$y2\" ");
 	svg_options($options);
 	print "/>\n";
     }
 
-    function svg_rect($x, $y, $w, $h, $options = array())
+    function svg_rect($x, $y, $w, $h, $options = array()) 
     {
-	printf("<rect x=\"%F\" y=\"%F\" width=\"%F\" height=\"%F\" ", $x, $y, $w, $h);
+	print("<rect x=\"$x\" y=\"$y\" width=\"$w\" height=\"$h\" ");
 	svg_options($options);
 	print "/>\n";
     }
@@ -86,7 +86,8 @@
     {
        print "<polygon points=\"";
        for ($p = 0; $p < count($points); $p += 2) {
-	  printf("%F,%F ", $points[$p], $points[$p+1]);
+	  $temp = $p+1;
+	  print("$points[$p],$points[$temp] ");
        }
        svg_options($options);
        print "\"/>\n";
@@ -95,7 +96,7 @@
     function allocate_color($colors)
     {
 	$col['rgb'] = sprintf("#%02X%02X%02X", $colors[0], $colors[1], $colors[2]);
-	$col['opacity'] = sprintf("%F", (127 - $colors[3]) / 127);
+	$col['opacity'] = (127 - $colors[3]) / 127;
 	return $col;
     }
 
@@ -265,12 +266,12 @@
 		$depth = ($x_ticks < 20) ? 8*SVG_DEPTH_SCALING : 6*SVG_DEPTH_SCALING;
 		$space = 0;
 
-		$x1 = (int)$x;
-		$y1 = (int)$y;
-		$w = (int)($bar_w - $space);
-		$h = (int)($ih - $ybm - $y);
-		$x2 = (int)($x + $bar_w - $space);
-		$y2 = (int)($ih - $ybm);
+		$x1 = $x;
+		$y1 = $y;
+		$w = ($bar_w - $space);
+		$h = ($ih - $ybm - $y);
+		$x2 = ($x + $bar_w - $space);
+		$y2 = ($ih - $ybm);
 
 		svg_group( array( 'stroke' => $cl['rx_border']['rgb'], 'stroke-opacity' => $cl['rx_border']['opacity'], 
 				  'stroke-width' => 1, 'stroke-linejoin' => 'round',
@@ -281,11 +282,11 @@
 		svg_poly(array($x2, $y1, $x2, $y2, $x2 - $depth, $y2 + $depth, $x2 - $depth, $y1 + $depth));
 		svg_group_end();
 
-        	$y1 = (int)($ytm + ($ih - $ytm - $ybm) - (($data[$i]['tx'] - $offset) / $sf));
-		$x1 = (int)($x1 + $bar_w);
-		$x2 = (int)($x2 + $bar_w);
-		$w = (int)($bar_w - $space);
-		$h = (int)($ih - $ybm - $y1 - 1);
+        $y1 = ($ytm + ($ih - $ytm - $ybm) - (($data[$i]['tx'] - $offset) / $sf));
+		$x1 = ($x1 + $bar_w);
+		$x2 = ($x2 + $bar_w);
+		$w = ($bar_w - $space);
+		$h = ($ih - $ybm - $y1 - 1);
 
 		svg_group( array( 'stroke' => $cl['tx_border']['rgb'], 'stroke-opacity' => $cl['tx_border']['opacity'],
 				  'stroke-width' => 1, 'stroke-linejoin' => 'round',
@@ -305,7 +306,7 @@
             {
                 $label = ($i * $y_scale).$unit;
 		$tx = $xlm - 16;
-		$ty = (int)(($ih - $ybm) - ($i * $y_step) + 8 + $depth);
+		$ty = (($ih - $ybm) - ($i * $y_step) + 8 + $depth);
 		svg_text($tx, $ty, $label);
             }
 	    svg_group_end();

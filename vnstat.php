@@ -175,7 +175,7 @@
                 $hour[$d[1]]['act']  = 1;
                 if ($d[2] != 0 && $use_label)
                 {
-                    $st = $d[2] - ($d[2] % 3600);
+                    $st = $d[2] - fmod($d[2],3600);
                     $et = $st + 3600;
                     $hour[$d[1]]['label'] = strftime(T('datefmt_hours'), $st).' - '.strftime(T('datefmt_hours'), $et);
                     $hour[$d[1]]['img_label'] = strftime(T('datefmt_hours_img'), $d[2]);

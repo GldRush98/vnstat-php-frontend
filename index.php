@@ -67,26 +67,12 @@
 
     function kbytes_to_string($kb)
     {
-
-        global $byte_notation;
-
-        $units = array('TB','GB','MB','KB');
-        $scale = 1024*1024*1024;
-        $ui = 0;
-
-        $custom_size = isset($byte_notation) && in_array($byte_notation, $units);
-
-        while ((($kb < $scale) && ($scale > 1)) || $custom_size)
-        {
-            $ui++;
-            $scale = $scale / 1024;
-
-            if ($custom_size && $units[$ui] == $byte_notation) {
-                break;
-            }
-        }
-
-        return sprintf("%0.2f %s", ($kb/$scale),$units[$ui]);
+        $units = array('KB', 'MB', 'GB', 'TB');
+        $kb = max($kb, 0);
+        $pow = floor(($kb ? log($kb) : 0) / log(1024)); 
+        $pow = min($pow, count($units) - 1); 
+	    $kb /= pow(1024, $pow);
+        return round($kb, 2) . ' ' . $units[$pow];
     }
 
     function write_summary()
@@ -183,7 +169,7 @@
     <div id="header"><?php print T('Traffic data for').(isset($iface_title[$iface]) ? $iface_title[$iface] : '')." ($iface)";?></div>
     <div id="main">
     <?php
-    $graph_params = "if=$iface&amp;page=$page&amp;style=$style";
+    $graph_params = "if=$iface&page=$page&style=$style";
     if ($page != 's')
         if ($graph_format == 'svg') {
 	     print "<object type=\"image/svg+xml\" width=\"692\" height=\"297\" data=\"graph_svg.php?$graph_params\"></object>\n";
@@ -209,7 +195,7 @@
     }
     ?>
     </div>
-    <div id="footer"><a href="http://www.sqweek.com/">vnStat PHP frontend</a> 1.5.2 - &copy;2006-2011 Bjorge Dijkstra (bjd _at_ jooz.net)</div>
+    <div id="footer"><a href="http://www.sqweek.com/">vnStat PHP frontend</a> 1.5.2 Modded by Nick Overstreet</div>
   </div>
 </div>
 
